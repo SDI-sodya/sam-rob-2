@@ -1,5 +1,58 @@
 body{
-    background-color: lightblue;
-    text-align: center;
+    margin: 0;
     font-family: 'Times New Roman', Times, serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b );
+    color: #e2e8f0;
+}
+.container{
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+}
+h1{
+    text-align: center;
+    margin-bottom: 5px;
+}
+.subtitle{
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 30px;
+}
+.card{
+    background: #111827;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 30xp rgb(0,0,0,0.5);
+}
+input[type="file"]{
+    color: white;
+}
+button{
+    color: #3b82f6;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color:#0f172a ;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:hover{
+    background: #64748b;
+
+}
+.output-wp{
+    margin-top: 30px;
+    background: #0b1220;
+    padding: 20px;
+    border-radius: 12px;
+    min-height: 300px;
+}
+pre{
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: #22c55e;
 }

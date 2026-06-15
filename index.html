@@ -7,6 +7,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <h1>Генеологічне дерево</h1>
+        <p class="subtitle">файл</p>
+
+        <div class="card">
+            <input type="file" id="fileInput" accept=".gtr">
+            <button onclick="processFile()">обробка</button>
+        </div>
+
+        <div class="Output-wp">
+            <h2>result xml</h2>
+            <pre id="output">tyt xml potom</pre>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
