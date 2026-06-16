@@ -1,16 +1,18 @@
-// ========== Конвертер з .gtr в .xml ==========
-function gtrToXml(data) {
-  const lines = data.split('\n').filter(line => line.trim() !== '');
-  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-  xml += '<genealogy>\n';
+import { escapeXml } from './helpers.js'
 
-  // Стек для відсліження батьків
-  let stack = [];
-  let indent = 1;
+// ========== Конвертер з .gtr в .xml ==========
+export function gtrToXml(data) {
+  const lines = data
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line);
+
+  const roots = [];
+  const stack = [];
+
   let currentPerson = null;
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim();
+  for (const line of lines) {
     const parts = line.split(/\s+/);
 
     if (parts.length < 3) continue;
@@ -19,126 +21,86 @@ function gtrToXml(data) {
     const tag = parts[1];
     const value = parts.slice(2).join(' ');
 
-    // Якщо рівень менший або рівний, закриваємо передніх батьків
-    while (stack.length > 0 && stack[stack.length - 1].level >= level) {
-      const closed = stack.pop();
-      if (closed.tag === 'person') {
-        xml += '  '.repeat(closed.level) + '</person>\n';
-      } else if (closed.tag === 'children') {
-        xml += '  '.repeat(closed.level) + '</children>\n';
-      }
-    }
-
-    // Визначаємо поточний рівень вкладенності
-    const currentIndent = stack.length +1;
-
+    // Нова людина
     if (tag === 'NAME') {
-      // Нова людина
-      const personIndent = currentIndent;
-      const name = value;
+      const person = {
+        level,
+        name: value,
+        surname: '',
+        sex: '',
+        birth: '',
+        children: []
+      };
 
-      let attrs = { name: name };
+      // Знаходимо правильного батька
+      while (stack.length && stack[stack.length - 1].level >= level) {
+        stack.pop();
+      }
 
-      // Дивимося наступні рядки для зброу інформації про людину
-      let j = i + 1;
-      let childrenLevel = null;
-      let personLines = [];
+      if (stack.length === 0) {
+        roots.push(person);
+      } else {
+        stack[stack.length - 1].children.push(person);
+      }
 
-      // Збираємо всі рядки, що належать до цієї людини
-      while (j < lines.length) {
-        const nextParts = lines[j].trim().split(/\s+/);
-        if (nextParts.length < 3) { j++; continue; }
-        const nextLevel = parseInt(nextParts[0]);
+      stack.push(person);
+      currentPerson = person;
+    }
+    else {
+      // Властивості належать останній знайденій людині
+      if (!currentPerson) continue;
 
-        if (nextLevel <= level) break;
-
-        const nextTag = nextParts[1];
-        const nextValue = nextParts.slice(2).join(' ');
-
-        // Якщо не нащадок
-        if (nextLevel > level + 1) {
+      switch (tag) {
+        case 'SURNAME':
+          currentPerson.surname = value;
           break;
-        }
 
-        // Додаємо атрибут, якщо це не NAME
-        if (nextTag === 'SURNAME') attrs.surname = nextValue;
-        else if (nextTag === 'SEX') attrs.sex = nextValue;
-        else if (nextTag === 'BIRTH') attrs.birth = nextValue;
-        else if (nextTag === 'NAME') {
+        case 'SEX':
+          currentPerson.sex = value;
           break;
-        }
 
-        j++;
-      }
-
-      // Формуємо XML для людини
-      let attrString = '';
-      for (let key in attrs) {
-        attrString += ` ${key}="${escapeXml(attrs[key])}"`;
-      }
-
-      xml += '  '.repeat(personIndent - 1) + `<person${attrString}>\n`;
-
-      // Перевірка на нащадків
-      let hasChildren = false;
-      let k = i + 1;
-      while (k < lines.length) {
-        const nextParts = lines[k].trim().split(/\s+/);
-        if (nextParts.length < 3) { k++; continue; }
-        const nextLevel = parseInt(nextParts[0]);
-
-        if (nextLevel <= level) break;
-
-        if (nextLevel === level + 1) {
-          hasChildren = true;
+        case 'BIRTH':
+          currentPerson.birth = value;
           break;
-        }
-        k++;
       }
-
-      if (hasChildren) {
-        xml += '  '.repeat(personIndent) + '<children>\n';
-        stack.push({ level: level, tag: 'children', indent: personIndent });
-      }
-
-      stack.push({ level: level, tag: 'person', indent: personIndent - 1 });
-
-      i = j - 1; // Переміщаємо індекс до останнього обробленого рядка
     }
   }
 
-  // Закриваємо всі відкриті теги
-  while (stack.length > 0) {
-    const closed = stack.pop();
-    if (closed.tag === 'person') {
-      xml += '  '.repeat(closed.indent) + '</person>\n';
-    } else if (closed.tag === 'children') {
-      xml += '  '.repeat(closed.indent) + '</children>\n';
-    }
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += '<genealogy>\n';
+
+  for (const person of roots) {
+    xml += personToXml(person, 1);
   }
 
   xml += '</genealogy>';
+
   return xml;
 }
 
-// Екранує спеціальні символи для XML
-function escapeXml(str) {
-    if (!str) return '';
-    return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&apos;');
-}
+function personToXml(person, indent) {
+  const space = '  '.repeat(indent);
 
-// Розекранує XML символи
-function unescapeXml(str) {
-    if (!str) return '';
-    return str
-        .replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&apos;/g, "'");
+  let xml = `${space}<person`;
+
+  xml += ` name="${escapeXml(person.name)}"`;
+  xml += ` surname="${escapeXml(person.surname)}"`;
+  xml += ` sex="${escapeXml(person.sex)}"`;
+  xml += ` birth="${escapeXml(person.birth)}"`;
+
+  xml += '>\n';
+
+  if (person.children.length > 0) {
+    xml += `${space}  <children>\n`;
+
+    for (const child of person.children) {
+      xml += personToXml(child, indent + 2);
+    }
+
+    xml += `${space}  </children>\n`;
+  }
+
+  xml += `${space}</person>\n`;
+
+  return xml;
 }

@@ -14,8 +14,7 @@
         <div class="card">
             <input type="file" id="fileInput" accept=".gtr,.xml">
             <button onclick="processFile()">Обробити файл</button>
-            <button onclick="clearOutput()" style="background: #dc2626; color: white;">Очистити</button>
-           
+            <button onclick="clearOutput()" class="button2">Очистити</button>
 
         </div>
 
@@ -23,15 +22,7 @@
             <h2>Результат</h2>
             <pre id="output">Очікування файлу...</pre>
         </div>
-
-        <div class="tree-cont">
-            <h2>Дерево</h2>
-
-            <div class="tree-convert">
-                Дерево буде після конверцації
-            </div>
-        </div>
     </div>
-    <script src="script.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>

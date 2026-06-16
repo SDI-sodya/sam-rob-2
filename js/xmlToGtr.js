@@ -1,3 +1,3 @@
-function xmlToGtr(data) {
+export function xmlToGtr(data) {
 
 }

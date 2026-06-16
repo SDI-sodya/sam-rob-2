@@ -27,6 +27,7 @@ h1{
     justify-content: center;
     align-items: center;
     box-shadow: 0 10px 20px rgb(0,0,0,0.1);
+    margin-bottom: 20px;
 }
 input[type="file"]{
     color: white;
@@ -44,7 +45,16 @@ button{
 button:hover{
     background: #64748b;
     color: white;
+    transform:translateY(-2px);
+}
+.button2{
+    background: #dc2626; 
+    color: white;
+}
 
+.button2:hover{
+    background: #EE204D;
+    transform:translateY(-2px);
 }
 .output-wp{
     margin-top: 30px;
@@ -60,7 +70,7 @@ pre{
     font-size: 14px;
     line-height: 1.6;
 }
-.tree-cont{
+/* .tree-cont{
     background: white;
     margin-top: 30px;
     color: black;
@@ -72,5 +82,5 @@ pre{
     padding: 40px;
     border: 2px dashed #ccc;
     color: #777;
-    /* font-style: italic; */
-}
+    font-style: italic;
+} */

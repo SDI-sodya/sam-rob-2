@@ -1,16 +1,20 @@
+import { gtrToXml } from "./gtrToxml.js";
+import { xmlToGtr } from "./xmlToGtr.js";
+import { clearOutput } from './clearOutput.js';
+
 // ========== Основна функція оброки файлу ==========
-export function processFile(){
+window.processFile = function() {
   const fileInput = document.getElementById('fileInput');
   const file = fileInput.files[0];
 
-  if(!file){
-    alert('Будь ласка, виберіть файл!')
+  if (!file) {
+    alert('Будь ласка, виберіть файл!');
     return;
   }
-  
+
   const reader = new FileReader();
 
-  reader.onload = function(e){
+  reader.onload = function(e) {
     const text = e.target.result;
     let result = '';
 
@@ -24,7 +28,10 @@ export function processFile(){
     } else {
       alert('Непідтримуваний формат файлу. Будь ласка, виберіть .gtr або .xml файл.');
     }
-  }
+  };
 
   reader.readAsText(file);
-}
+};
+
+// Робимо clearOutput глобальною
+window.clearOutput = clearOutput;
