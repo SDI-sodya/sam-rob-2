@@ -2,12 +2,14 @@
 function processFile(){
   const fileInput = document.getElementById('fileInput');
   const file = fileInput.files[0];
+
   if(!file){
     alert('Будь ласка, виберіть файл!')
     return;
   }
   
   const reader = new FileReader();
+
   reader.onload = function(e){
     const text = e.target.result;
     let result = '';
@@ -108,7 +110,7 @@ function gtrToXml(data) {
       // Формуємо XML для людини
       let attrString = '';
       for (let key in attrs) {
-        attrString += ` ${key}="${attrs[key]}"`;
+        attrString += ` ${key}="${escapeXml(attrs[key])}"`;
       }
 
       xml += '  '.repeat(personIndent - 1) + `<person${attrString}>\n`;
@@ -132,7 +134,7 @@ function gtrToXml(data) {
 
       if (hasChildren) {
         xml += '  '.repeat(personIndent) + '<children>\n';
-        stack.push({ level: level, tag: children, indent: personIndent});
+        stack.push({ level: level, tag: 'children', indent: personIndent });
       }
 
       stack.push({ level: level, tag: 'person', indent: personIndent - 1 });
@@ -155,3 +157,30 @@ function gtrToXml(data) {
   return xml;
 }
 
+function xmlToGtr(data) {
+
+}
+
+
+
+// Екранує спеціальні символи для XML
+function escapeXml(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+}
+
+// Розекранує XML символи
+function unescapeXml(str) {
+    if (!str) return '';
+    return str
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&apos;/g, "'");
+}
