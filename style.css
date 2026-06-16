@@ -39,9 +39,11 @@ button{
     color:#0f172a ;
     cursor: pointer;
     transition: 0.3s;
+    font-weight: bold;
 }
 button:hover{
     background: #64748b;
+    color: white;
 
 }
 .output-wp{
@@ -55,4 +57,6 @@ pre{
     white-space: pre-wrap;
     word-wrap: break-word;
     color: #22c55e;
+    font-size: 14px;
+    line-height: 1.6;
 }
