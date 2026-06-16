@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genealogy>
+  <person name="Andrew" surname="Smith" sex="M" birth="1980-01-15">
+    <children>
+      <person name="John" surname="Smith" sex="M" birth="2010-06-20">
+      </person>
+      <person name="Emily" surname="Smith" sex="F" birth="2012-09-10">
+      </person>
+    </children>
+  </person>
+  <person name="Robert" surname="Johnson" sex="M" birth="1975-11-02">
+    <children>
+      <person name="Alice" surname="Johnson" sex="F" birth="2005-07-14">
+      </person>
+    </children>
+  </person>
+</genealogy>

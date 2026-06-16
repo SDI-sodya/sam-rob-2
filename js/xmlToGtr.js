@@ -1,3 +1,5 @@
+import { unescapeXml } from './helpers.js'
+
 export function xmlToGtr(data) {
 let result = [];
   let currentLevel = 0;
@@ -20,7 +22,7 @@ let result = [];
     index = endTag + 1; // Зсуває вказівник для наступної ітерації
     
     if (tagContent.startsWith('?xml')) continue;
-   
+
     if (tagContent.startsWith('/')) {
       let tagName = tagContent.substring(1).trim();
       

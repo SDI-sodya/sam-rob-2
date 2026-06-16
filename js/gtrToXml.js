@@ -1,4 +1,4 @@
-import { escapeXml } from './helpers.js'
+import { escapeXml } from './helpers.js';
 
 // ========== Конвертер з .gtr в .xml ==========
 export function gtrToXml(data) {
