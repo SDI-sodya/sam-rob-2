@@ -1,39 +1,3 @@
-// ========== Основна функція оброки файлу ==========
-function processFile(){
-  const fileInput = document.getElementById('fileInput');
-  const file = fileInput.files[0];
-
-  if(!file){
-    alert('Будь ласка, виберіть файл!')
-    return;
-  }
-  
-  const reader = new FileReader();
-
-  reader.onload = function(e){
-    const text = e.target.result;
-    let result = '';
-
-    // Визначаємо тип файлу за розширенням
-    if (file.name.endsWith('.gtr')) {
-      result = gtrToXml(text);
-      document.getElementById('output').textContent = result;
-    } else if (file.name.endsWith('.xml')) {
-      result = xmlToGtr(text);
-      document.getElementById('output').textContent = result;
-    } else {
-      alert('Непідтримуваний формат файлу. Будь ласка, виберіть .gtr або .xml файл.');
-    }
-  }
-
-  reader.readAsText(file);
-}
-
-function clearOutput(){
-  document.getElementById('output').textContent = 'Очікування файлу...';
-  document.getElementById('fileInput').value = '';
-}
-
 // ========== Конвертер з .gtr в .xml ==========
 function gtrToXml(data) {
   const lines = data.split('\n').filter(line => line.trim() !== '');
@@ -156,12 +120,6 @@ function gtrToXml(data) {
   xml += '</genealogy>';
   return xml;
 }
-
-function xmlToGtr(data) {
-
-}
-
-
 
 // Екранує спеціальні символи для XML
 function escapeXml(str) {
