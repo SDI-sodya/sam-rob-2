@@ -30,7 +30,10 @@ h1{
     margin-bottom: 20px;
 }
 input[type="file"]{
-    color: white;
+    background: white;
+    padding: 8px;
+    border-radius: 8px;
+    border:1px solid #ddd ;
 }
 button{
     color: #3b82f6;
@@ -53,7 +56,8 @@ button:hover{
 }
 
 .button2:hover{
-    background: #EE204D;
+    /* background: #EE204D; */
+    background: #dc2626; 
     transform:translateY(-2px);
 }
 .output-wp{
@@ -69,6 +73,12 @@ pre{
     color: #22c55e;
     font-size: 14px;
     line-height: 1.6;
+}
+#fileName{
+    color: #e2e8f0;
+    font-size: 14px;
+    margin-left: 10px;
+    opacity: 0.8;
 }
 /* .tree-cont{
     background: white;

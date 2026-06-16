@@ -32,6 +32,10 @@ window.processFile = function() {
 
   reader.readAsText(file);
 };
+document.getElementById('fileInput').addEventListener('change', function() {
+  const fileName = this.files[0] ? this.files[0].name : 'Файл не вибрано';
+  document.getElementById('fileName').textContent = fileName;
+});
 
 // Робимо clearOutput глобальною
 window.clearOutput = clearOutput;
